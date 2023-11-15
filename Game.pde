@@ -23,7 +23,7 @@ class Game {
   
   void update() {
     if (dino.alive) {
-      dino.update();
+      dino.update(find_next_enemy(dino), (int) speed);
     }
     Iterator<Enemy> iterator = enemies.iterator();
     while (iterator.hasNext()) {
@@ -47,24 +47,6 @@ class Game {
     for (Enemy enemy : enemies) {
       if (dino.alive && dino.is_colliding(enemy))
         dino.kill();
-    }
-  }
-  
-  void dino_crouch() {
-    if (dino.alive && !dino.crouching()) {
-      dino.crouch();
-    }
-  }
-  
-  void dino_stop_crouch() {
-    if (dino.alive && dino.crouching()) {
-      dino.stop_crouch();
-    }
-  }
-  
-  void dino_jump() {
-    if (dino.alive && !dino.jumping()) {
-      dino.jump();
     }
   }
   
@@ -102,5 +84,14 @@ class Game {
     for (Enemy enemy : enemies) {
       enemy.toggle_sprite();
     }
+  }
+  
+  Enemy find_next_enemy(Dino dino) {
+    for (Enemy enemy : enemies) {
+       if (enemy.x > dino.x) {
+         return enemy;
+       }
+    }
+    return null;
   }
 }

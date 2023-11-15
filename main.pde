@@ -28,20 +28,6 @@ void draw() {
   }
 }
 
-void keyPressed() {
-  if (key == CODED) {
-    if (keyCode == UP)
-      game.dino_jump();
-    if (keyCode == DOWN)
-      game.dino_crouch();
-  }
-}
-
-void keyReleased() {
-  if (key == CODED && keyCode == DOWN)
-    game.dino_stop_crouch();
-}
-
 void initialize_sprites() {
   PImage sprite_map = loadImage("sprites.png");
   sprites.put("standing_dino", sprite_map.get(1338, 2, 88, 94));

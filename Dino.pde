@@ -1,4 +1,6 @@
 class Dino extends GameObject implements Comparable<Dino> {
+  Brain brain;
+  
   float jump_percent;
   boolean alive = true;
   int score;
@@ -11,14 +13,39 @@ class Dino extends GameObject implements Comparable<Dino> {
     
     jump_percent = 0;
     
+    brain = new Brain(new Genome());
+    
     sprite = "walking_dino_1";
     sprite_offset[0] = -4;
     sprite_offset[1] = -2;
   }
   
-  void update() {
+  void update(Enemy nextEnemy, int speed) {
+    if (nextEnemy != null) {
+      float distance = nextEnemy.x - x; // d, x, y, w, h
+      float[] inputs = {distance / 900, (nextEnemy.x - 450) / (1400 - 450), (nextEnemy.y - 370) / (480 - 370), (nextEnemy.w - 30) / (146 - 30), (nextEnemy.h - 40) / (96 - 40), (y - 278) / (484 - 278), (speed - 15) / (15)};
+      brain.forward_feed(inputs);
+      process_output();
+    }
     if (jumping()) {
       update_jump();
+    }
+  }
+  
+  void process_output() {
+    // 0 - jump, 1 - crouch, 2 - nothing
+    println(brain.outputs);
+    if (brain.outputs[0] >= 0.5) {
+      if (!crouching() && !jumping())
+        jump();
+    }
+    if (brain.outputs[1] < 0.5) {
+      if (crouching())
+        stop_crouch();
+    } else {
+      if (jumping())
+        stop_jump();
+      crouch();
     }
   }
   
