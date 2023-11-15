@@ -16,9 +16,23 @@ class Dino extends GameObject implements Comparable<Dino> {
     sprite_offset[1] = -2;
   }
   
+  void update() {
+    if (jumping()) {
+      update_jump();
+    }
+  }
+  
   void display() {
     if (alive)
       image(sprites.get(sprite), x + sprite_offset[0], y + sprite_offset[1]);
+  }
+  
+  void update_jump() {
+    y = (int)(450 - ((-4 * jump_percent * (jump_percent - 1)) * 172));
+    jump_percent += 0.03;
+    if (jump_percent > 1) {
+      stop_jump();
+    }
   }
   
   void jump() {

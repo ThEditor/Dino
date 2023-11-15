@@ -15,6 +15,13 @@ class Game {
   
   void update() {
     if (dino.alive) {
+      dino.update();
+    }
+  }
+  
+  void dino_jump() {
+    if (dino.alive && !dino.jumping()) {
+      dino.jump();
     }
   }
   

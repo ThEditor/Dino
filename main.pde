@@ -4,13 +4,20 @@ Game game;
 
 void setup() {
   size(1280, 720);
-  background(247);
   initialize_sprites();
   game = new Game();
 }
 
 void draw() {
+  background(247);
   game.display();
+  game.update();
+}
+
+void keyPressed() {
+  if (key == CODED && keyCode == UP) {
+    game.dino_jump();
+  }
 }
 
 void initialize_sprites() {
