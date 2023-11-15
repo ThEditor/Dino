@@ -77,6 +77,18 @@ class Game {
   
   void next_gen() {
     gen++;
+    score = 0;
+    speed = 15;
+    enemies.clear();
+    
+    int total_score = 0;
+    for (Dino dino: dinos)
+      total_score += dino.score;
+    last_gen_avg_score = total_score / DINOS;
+    Collections.sort(dinos);
+    Collections.reverse(dinos);
+    last_gen_max_score = dinos.get(0).score;
+    
   }
   
   void spawn_enemy() {
@@ -111,8 +123,8 @@ class Game {
     for (Dino dino: dinos)
       if (dino.alive) {
         dino.toggle_sprite();
-        dino.score++;
       }
+    score++;
   }
   
   void quater_second() {
