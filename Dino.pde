@@ -34,7 +34,6 @@ class Dino extends GameObject implements Comparable<Dino> {
   
   void process_output() {
     // 0 - jump, 1 - crouch, 2 - nothing
-    println(brain.outputs);
     if (brain.outputs[0] >= 0.5) {
       if (!crouching() && !jumping())
         jump();
@@ -97,7 +96,8 @@ class Dino extends GameObject implements Comparable<Dino> {
     return w == 110;
   }
   
-  void kill() {
+  void kill(int s) {
+    score = s;
     alive = false;
   }
   

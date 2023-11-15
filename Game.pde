@@ -1,29 +1,47 @@
+int DINOS = 1000;
 float MIN_SPAWN_MILLIS = 500;
 float MAX_SPAWN_MILLIS = 1500;
 
 class Game {
-  Dino dino;
+  ArrayList<Dino> dinos;
   ArrayList<Enemy> enemies;
   
   float speed;
   
   Ground ground;
+  int alive;
+  
+  int gen;
+  
+  int score;
+  int last_gen_avg_score;
+  int last_gen_max_score;
   
   float last_spawn_time;
   float time_to_spawn;
   
   Game() {
-    dino = new Dino();
+    dinos = new ArrayList<Dino>();
+    for (int i = 0; i < DINOS; i++) {
+      dinos.add(new Dino());
+    }
     enemies = new ArrayList<Enemy>();
     speed = 15;
+    gen = 1;
+    score = 0;
+    last_gen_avg_score = 0;
+    last_gen_max_score = 0;
+    alive = DINOS;
     ground = new Ground();
     last_spawn_time = millis();
     time_to_spawn = random(MIN_SPAWN_MILLIS, MAX_SPAWN_MILLIS);
   }
   
   void update() {
-    if (dino.alive) {
-      dino.update(find_next_enemy(dino), (int) speed);
+    for (Dino dino: dinos) {
+      if (dino.alive) {
+        dino.update(find_next_enemy(dino), (int) speed);
+      }
     }
     Iterator<Enemy> iterator = enemies.iterator();
     while (iterator.hasNext()) {
@@ -44,10 +62,21 @@ class Game {
   }
   
   void collision_check() {
-    for (Enemy enemy : enemies) {
-      if (dino.alive && dino.is_colliding(enemy))
-        dino.kill();
+    alive = 0;
+    for (Dino dino: dinos) {
+      for (Enemy enemy : enemies) {
+        if (dino.alive && dino.is_colliding(enemy))
+          dino.kill(score);
+      }
+      if (dino.alive)
+        alive++;
     }
+    if (alive == 0)
+      next_gen();
+  }
+  
+  void next_gen() {
+    gen++;
   }
   
   void spawn_enemy() {
@@ -63,21 +92,27 @@ class Game {
     for (Enemy enemy : enemies) {
       enemy.display();
     }
-    dino.display();
+    for (Dino dino: dinos)
+      dino.display();
     display_info();
   }
   
   void display_info() {
     fill(0);
     textSize(30);
-    text(dino.score, 1200, 80);
+    text(score, 1200, 80);
+    text("Gen: " + gen, 80, 80);
+    text("Last Gen Average Score: " + last_gen_avg_score, 80, 120);
+    text("Last Gen Max Score: " + last_gen_max_score, 80, 160);
+    text("Alive: " + alive, 80, 200);
   }
   
   void tenth_second() {
-    if (dino.alive) {
-      dino.toggle_sprite();
-      dino.score++;
-    }
+    for (Dino dino: dinos)
+      if (dino.alive) {
+        dino.toggle_sprite();
+        dino.score++;
+      }
   }
   
   void quater_second() {
