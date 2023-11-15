@@ -1,5 +1,6 @@
 class Dino extends GameObject implements Comparable<Dino> {
   Brain brain;
+  Genome genome;
   
   float jump_percent;
   boolean alive = true;
@@ -13,11 +14,16 @@ class Dino extends GameObject implements Comparable<Dino> {
     
     jump_percent = 0;
     
-    brain = new Brain(new Genome());
+    genome = new Genome();
+    init_brain();
     
     sprite = "walking_dino_1";
     sprite_offset[0] = -4;
     sprite_offset[1] = -2;
+  }
+  
+  void init_brain() {
+    brain = new Brain(genome);
   }
   
   void update(Enemy nextEnemy, int speed) {

@@ -89,6 +89,41 @@ class Game {
     Collections.reverse(dinos);
     last_gen_max_score = dinos.get(0).score;
     
+    ArrayList<Dino> new_dinos = new ArrayList<Dino>();
+    // Best 10% as is
+    for (int i = 0; i < DINOS * 0.1; i++) {
+      new_dinos.add(dinos.get(i));
+      new_dinos.get(i).reset();
+    }
+    // New 10%
+    for (int i = 0; i < DINOS * 0.1; i++) {
+      new_dinos.add(new Dino());
+    }
+    // 20% Mutate from best
+    for (int i = 0; i < DINOS * 0.2; i++) {
+      Dino dino = new Dino();
+      dino.genome = dinos.get(0).genome.mutate();
+      dino.init_brain();
+      new_dinos.add(dino);
+    }
+    // 30% father from best 5%
+    for (int i = 0; i < DINOS * 0.3; i++) {
+      Dino father = dinos.get((int)random(DINOS * 0.05));
+      Dino son = new Dino();
+      son.genome = father.genome.mutate();
+      son.init_brain();
+      new_dinos.add(son);
+    }
+    // 30% father & mother from best 5%
+    for (int i = 0; i < DINOS * 0.2; i++) {
+      Dino father = dinos.get((int)random(DINOS * 0.05));
+      Dino mother = dinos.get((int)random(DINOS * 0.05));
+      Dino son = new Dino();
+      son.genome = father.genome.crossover(mother.genome);
+      son.init_brain();
+      new_dinos.add(son);
+    }
+    dinos = new_dinos;
   }
   
   void spawn_enemy() {
