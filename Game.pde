@@ -38,6 +38,7 @@ class Game {
       last_spawn_time = millis();
       time_to_spawn = random(MIN_SPAWN_MILLIS, MAX_SPAWN_MILLIS);
     }
+    ground.update((int)speed);
   }
   
   void dino_jump() {
@@ -60,5 +61,18 @@ class Game {
       enemy.display();
     }
     dino.display();
+  }
+  
+  void tenth_second() {
+    if (dino.alive) {
+      dino.toggle_sprite();
+    }
+    dino.score++;
+  }
+  
+  void quater_second() {
+    for (Enemy enemy : enemies) {
+      enemy.toggle_sprite();
+    }
   }
 }

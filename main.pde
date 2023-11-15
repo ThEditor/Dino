@@ -5,6 +5,9 @@ HashMap<String, PImage> sprites = new HashMap<String, PImage>();
 
 Game game;
 
+int lastMillis1 = 0;
+int lastMillis2 = 0;
+
 void setup() {
   size(1280, 720);
   initialize_sprites();
@@ -15,6 +18,14 @@ void draw() {
   background(247);
   game.display();
   game.update();
+  if (millis() - lastMillis1 >= 100) {
+    game.tenth_second();
+    lastMillis1 = millis();
+  }
+  if (millis() - lastMillis2 >= 250) {
+    game.quater_second();
+    lastMillis2 = millis();
+  }
 }
 
 void keyPressed() {
