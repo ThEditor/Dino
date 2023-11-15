@@ -39,6 +39,15 @@ class Game {
       time_to_spawn = random(MIN_SPAWN_MILLIS, MAX_SPAWN_MILLIS);
     }
     ground.update((int)speed);
+    collision_check();
+    speed += 0.001;
+  }
+  
+  void collision_check() {
+    for (Enemy enemy : enemies) {
+      if (dino.alive && dino.is_colliding(enemy))
+        dino.kill();
+    }
   }
   
   void dino_jump() {
