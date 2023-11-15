@@ -70,13 +70,20 @@ class Game {
       enemy.display();
     }
     dino.display();
+    display_info();
+  }
+  
+  void display_info() {
+    fill(0);
+    textSize(30);
+    text(dino.score, 1200, 80);
   }
   
   void tenth_second() {
     if (dino.alive) {
       dino.toggle_sprite();
+      dino.score++;
     }
-    dino.score++;
   }
   
   void quater_second() {
