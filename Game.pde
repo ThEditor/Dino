@@ -50,6 +50,18 @@ class Game {
     }
   }
   
+  void dino_crouch() {
+    if (dino.alive && !dino.crouching()) {
+      dino.crouch();
+    }
+  }
+  
+  void dino_stop_crouch() {
+    if (dino.alive && dino.crouching()) {
+      dino.stop_crouch();
+    }
+  }
+  
   void dino_jump() {
     if (dino.alive && !dino.jumping()) {
       dino.jump();

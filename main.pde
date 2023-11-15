@@ -29,9 +29,17 @@ void draw() {
 }
 
 void keyPressed() {
-  if (key == CODED && keyCode == UP) {
-    game.dino_jump();
+  if (key == CODED) {
+    if (keyCode == UP)
+      game.dino_jump();
+    if (keyCode == DOWN)
+      game.dino_crouch();
   }
+}
+
+void keyReleased() {
+  if (key == CODED && keyCode == DOWN)
+    game.dino_stop_crouch();
 }
 
 void initialize_sprites() {
