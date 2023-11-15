@@ -1,3 +1,6 @@
+import java.util.Collections;
+import java.util.Iterator;
+
 HashMap<String, PImage> sprites = new HashMap<String, PImage>();
 
 Game game;
